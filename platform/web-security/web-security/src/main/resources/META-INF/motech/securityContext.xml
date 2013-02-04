@@ -41,7 +41,7 @@
     <security:http pattern="/**/commcare/**" security="none" />
     <security:http pattern="/**/pillreminder-demo/**" security="none" />
     <security:http pattern="/**/verboice/**" security="none" />
-
+    <security:http pattern="/**/cmsliteapi/**" security="none" />
 
     <bean id="securityContextPersistenceFilter" class="org.springframework.security.web.context.SecurityContextPersistenceFilter"/>
 
