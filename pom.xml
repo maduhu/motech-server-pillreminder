@@ -25,9 +25,9 @@
         <modules.root.dir>${basedir}</modules.root.dir>
         <jdk.version>1.7</jdk.version>
 
-        <scm.connection>scm:git:https://code.google.com/p/motech</scm.connection>
-        <scm.developerConnection>scm:git:https://code.google.com/p/motech</scm.developerConnection>
-        <scm.url>https://code.google.com/p/motech</scm.url>
+        <scm.connection>scm:git:https://github.com/motech/motech-server-pillreminder.git</scm.connection>
+        <scm.developerConnection>scm:git:https://github.com/motech/motech-server-pillreminder.git</scm.developerConnection>
+        <scm.url>https://github.com/motech/motech-server-pillreminder</scm.url>
     </properties>
 
     <dependencies>
@@ -1550,16 +1550,10 @@
     <distributionManagement>
         <repository>
             <id>motech.nexus</id>
-            <name>MOTECH Releases Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/releases</url>
+            <name>MOTECH Demos Repository</name>
+            <url>http://nexus.motechproject.org/content/repositories/demos</url>
             <uniqueVersion>false</uniqueVersion>
         </repository>
-        <snapshotRepository>
-            <id>motech.nexus</id>
-            <name>MOTECH Snapshots Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/snapshots</url>
-            <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
     </distributionManagement>
 
     <reporting>
