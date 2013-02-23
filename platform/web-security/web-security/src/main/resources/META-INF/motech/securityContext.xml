@@ -40,7 +40,7 @@
          under different authorization schemes.  i.e. no security, api key, etc. -->
     <security:http pattern="/**/commcare/**" security="none" />
     <security:http pattern="/**/icappr/**" security="none" />
-    <security:http pattern="/**/pill-reminder-demo/**" security="none" />
+    <security:http pattern="/**/pillreminder-demo/**" security="none" />
     <security:http pattern="/**/verboice/**" security="none" />
     <security:http pattern="/**/cmsliteapi/**" security="none" />
 
