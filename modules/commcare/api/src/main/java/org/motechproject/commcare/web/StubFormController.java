@@ -47,6 +47,7 @@ public class StubFormController {
         } catch (JsonParseException e) {
             logger.warn("Unable to parse Json: " + e.getMessage());
             MotechEvent formFailEvent = new MotechEvent(EventSubjects.FORM_STUB_FAIL_EVENT);
+            formFailEvent.getParameters().put("failed_json", body);
             eventRelay.sendEventMessage(formFailEvent);
             return null;
         }

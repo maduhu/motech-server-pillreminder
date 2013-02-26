@@ -78,6 +78,7 @@ public class CasesController {
                     EventSubjects.MALFORMED_CASE_EXCEPTION);
             motechEvent.getParameters().put(EventDataKeys.MESSAGE,
                     "Incoming case xml did not parse correctly");
+            motechEvent.getParameters().put("failed_case_xml", caseXml);
             eventRelay.sendEventMessage(motechEvent);
         }
 
