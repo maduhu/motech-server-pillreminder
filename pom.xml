@@ -1121,8 +1121,8 @@
         <module>platform/web-security/web-security</module>
         <module>platform/web-security/web-security-bundle</module>
         <module>modules/admin/admin</module>
-        <!--<module>modules/alerts/api</module>
-        <module>modules/appointments/api</module> -->
+        <!--<module>modules/alerts/api</module> -->
+        <module>modules/appointments/api</module> 
         <module>modules/cmslite/api</module>
         <module>modules/commcare/api</module>
         <module>modules/decisiontree/core</module>
@@ -1160,8 +1160,8 @@
         <!-- OSGI modules -->
         <module>platform/server-bundle</module>
         <module>modules/admin/admin-bundle</module>
-        <!--<module>modules/alerts/api-bundle</module>
-        <module>modules/appointments/api-bundle</module>-->
+        <!--<module>modules/alerts/api-bundle</module> -->
+        <module>modules/appointments/api-bundle</module>
         <module>modules/cmslite/api-bundle</module>
         <module>modules/commcare/api-bundle</module>
         <module>modules/decisiontree/server-bundle</module>
@@ -1177,7 +1177,7 @@
         <module>modules/message-campaign/message-campaign-bundle</module>
         <!--<module>modules/mobileforms/api-bundle</module>-->
         <module>modules/mrs/api-bundle</module>
-        <module>modules/couchmrs/mrs-couchdb-bundle</module>
+        <!--<module>modules/couchmrs/mrs-couchdb-bundle</module>  -->
         <!--<module>modules/openmrs/api-bundle</module>
         <module>modules/openmrs/atomfeed-bundle</module>-->
         <module>modules/openmrs/ws-bundle</module>
