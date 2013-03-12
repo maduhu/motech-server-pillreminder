@@ -23,7 +23,7 @@ import static java.lang.String.format;
  */
 @Component
 public class VerboiceIVRService implements IVRService {
-    private static Logger log = LoggerFactory.getLogger(VerboiceIVRService.class);
+    private final Logger logger = LoggerFactory.getLogger("ivr-verboice");
     private static final String CALLBACK_URL = "callback_url";
 
     private SettingsFacade settings;
@@ -42,16 +42,20 @@ public class VerboiceIVRService implements IVRService {
         initSession(callRequest);
         try {
             GetMethod getMethod = new GetMethod(outgoingCallUri(callRequest));
+            logger.debug("Initiating call from IVR Verboice with Outgoing Call URI " + outgoingCallUri(callRequest));
             getMethod.addRequestHeader("Authorization", "Basic " + basicAuthValue());
             int status = commonsHttpClient.executeMethod(getMethod);
-            log.info(String.format("[%d]\n%s", status, getMethod.getResponseBodyAsString()));
+            logger.info(String.format("[%d]\n%s", status, getMethod.getResponseBodyAsString()));
         } catch (IOException e) {
-            log.error("Exception when initiating call: ", e);
+            logger.error("Exception when initiating call: ", e);
         }
     }
 
     private String basicAuthValue() {
-        return new String(Base64.encodeBase64((settings.getProperty("username") + ":" + settings.getProperty("password")).getBytes()));
+        String username = settings.getProperty("username");
+        String password = settings.getProperty("password");
+        logger.info("Verboice username is " + username + " and password is " + password);
+        return new String(Base64.encodeBase64((username + ":" + password).getBytes()));
     }
 
     private void initSession(CallRequest callRequest) {
@@ -69,6 +73,7 @@ public class VerboiceIVRService implements IVRService {
         if (callRequest.getPayload() != null && !callRequest.getPayload().isEmpty() && callRequest.getPayload().containsKey(CALLBACK_URL)) {
             callbackUrlParameter = "&" + CALLBACK_URL + "=" + callRequest.getPayload().get(CALLBACK_URL);
         }
+        logger.debug("Channel name is " + callRequest.getCallBackUrl());
         return format(
             "http://%s:%s/api/call?motech_call_id=%s&channel=%s&address=%s%s",
             settings.getProperty("host"),
