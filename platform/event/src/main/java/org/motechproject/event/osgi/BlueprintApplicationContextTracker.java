@@ -39,6 +39,10 @@ public class BlueprintApplicationContextTracker extends ServiceTracker {
             return applicationContext;
         }
 
+        if (applicationContext.getClass().getName().equals("org.motechproject.osgi.web.MotechOsgiWebApplicationContext")) {
+            return applicationContext;
+        }
+
         contextsProcessed.add(applicationContext.getId());
         eventAnnotationBeanPostProcessor.processAnnotations(applicationContext);
 
