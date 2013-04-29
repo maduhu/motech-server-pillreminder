@@ -80,7 +80,7 @@ public class VerboiceIVRController {
 
     @RequestMapping(value = "/ivr/callstatus", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public void handleMissedCall(HttpServletRequest request) {
+    public void handleMissedCall(HttpServletRequest request) throws InterruptedException {
         String callStatus = request.getParameter("CallStatus");
         String callSid = request.getParameter(VERBOICE_CALL_SID);
         String phoneNum = request.getParameter(VERBOICE_FROM_PHONE_PARAM);
@@ -110,7 +110,11 @@ public class VerboiceIVRController {
         callFlowServer.handleMissedCall(session.getSessionId());
     }
 
-    private void updateRecord(String callStatus, String callSid, String phoneNumber) {
+    private void updateRecord(String callStatus, String callSid, String phoneNumber) throws InterruptedException {
+        if ("ringing".equals(callStatus)) {
+            Thread.sleep(2500);
+        }
+
         FlowSessionRecord record = (FlowSessionRecord) flowSessionService.getSession(callSid);
         if (record != null) {
 
