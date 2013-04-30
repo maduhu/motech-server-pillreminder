@@ -19,6 +19,7 @@
                 #end
             #end
         </Gather>
+        <Redirect method="POST">$escape.escapeXml($url)</Redirect>
         #if($node.hasNoInputTransition())
             #set ($noInputUrl = "$url&Digits=")
             <Redirect method="POST">$escape.escapeXml($noInputUrl)</Redirect>
