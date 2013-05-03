@@ -52,8 +52,6 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <DynamicImport-Package>*
-                        </DynamicImport-Package>
                         <Export-Package>
                             org.motechproject.decisiontree.core;version=${project.version},
                             org.motechproject.decisiontree.core.model;version=${project.version},

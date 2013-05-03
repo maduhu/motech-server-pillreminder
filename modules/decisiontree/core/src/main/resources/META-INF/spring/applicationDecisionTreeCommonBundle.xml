@@ -15,7 +15,4 @@
 
     <osgi:reference id="eventListenerRegistryServiceOsgi" interface="org.motechproject.event.listener.EventListenerRegistryService"/>
 
-    <osgi:reference id="pillReminderSettingsOsgi" cardinality="0..1" interface="org.motechproject.icappr.PillReminderSettings"/>
-
-    <osgi:reference id="flowSessionServiceOsgi" cardinality="0..1" interface="org.motechproject.callflow.service.FlowSessionService"/>
 </beans>
