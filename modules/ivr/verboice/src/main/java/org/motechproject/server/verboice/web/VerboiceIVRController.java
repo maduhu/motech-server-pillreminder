@@ -112,7 +112,7 @@ public class VerboiceIVRController {
 
     private void updateRecord(String callStatus, String callSid, String phoneNumber) throws InterruptedException {
         if ("ringing".equals(callStatus)) {
-            Thread.sleep(2500);
+            Thread.sleep(6000);
         }
 
         FlowSessionRecord record = (FlowSessionRecord) flowSessionService.getSession(callSid);
