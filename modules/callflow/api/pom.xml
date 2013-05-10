@@ -69,7 +69,6 @@
                             org.motechproject.server.config,
                             org.motechproject.server.config.service,
                             org.motechproject.commons.couchdb.service,
-                            org.motechproject.icappr,
                             *
                         </Import-Package>
                     </instructions>
