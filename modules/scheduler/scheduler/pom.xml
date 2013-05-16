@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <artifactId>motech</artifactId>
         <groupId>org.motechproject</groupId>
@@ -34,13 +35,14 @@
             <artifactId>org.springframework.context.support</artifactId>
         </dependency>
 
-        <!--Please don't delete this! This dependency is required when using MySql as the job store for Quartz.-->
+        <!-- Please don't delete this! This dependency is required when using 
+            MySql as the job store for Quartz. -->
         <!-- Use the OSGi version -->
-        <!--<dependency>-->
-        <!--<groupId>mysql</groupId>-->
-        <!--<artifactId>mysql-connector-java</artifactId>-->
-        <!--<version>5.1.21</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.21</version>
+        </dependency>
 
         <!-- Test -->
         <dependency>
@@ -67,6 +69,7 @@
                             org.motechproject.scheduler.*;version=${project.version}
                         </Export-Package>
                         <Import-Package>
+                            sun.reflect;resolution:=optional,
                             javax.ejb;resolution:=optional,
                             javax.jms;resolution:=optional,
                             javax.mail;resolution:=optional,
@@ -88,8 +91,9 @@
                             org.springframework.jdbc.*;resolution:=optional,
                             *
                         </Import-Package>
-                        <!-- Spring context support has optional import of Quartz. This gives runtime exception.
-                        So embedding quartz related packages. Fragment bundle may also solve the problem. -->
+                        <!-- Spring context support has optional import of 
+                            Quartz. This gives runtime exception. So embedding quartz related packages. 
+                            Fragment bundle may also solve the problem. -->
                         <Private-Package>org.springframework.scheduling.quartz.*</Private-Package>
                         <Embed-Dependency>
                             org.springframework.context.support;inline=true
@@ -161,12 +165,14 @@
                         </filter>
                     </filters>
                     <transformers>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <transformer
+                            implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <manifestEntries>
                                 <Main-Class>org.motechproject.scheduler.impl.MotechScheduler</Main-Class>
                             </manifestEntries>
                         </transformer>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                        <transformer
+                            implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
                             <resource>META-INF/spring.handlers</resource>
                             <file>${basedir}/src/main/shade-config/spring.handlers</file>
                         </transformer>
