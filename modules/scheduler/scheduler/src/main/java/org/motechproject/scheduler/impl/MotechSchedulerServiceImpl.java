@@ -34,6 +34,8 @@ import org.quartz.impl.calendar.BaseCalendar;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.quartz.spi.OperableTrigger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
@@ -63,6 +65,8 @@ public class MotechSchedulerServiceImpl extends MotechObject implements MotechSc
     private static final int MAX_REPEAT_COUNT = 999999;
     private static final int MILLISECOND = 1000;
     private SchedulerFactoryBean schedulerFactoryBean;
+
+    private Logger logger = LoggerFactory.getLogger("job-log");
 
     @Value("#{quartzProperties['org.quartz.scheduler.cron.trigger.misfire.policy']}")
     private String cronTriggerMisfirePolicy;
@@ -624,6 +628,7 @@ public class MotechSchedulerServiceImpl extends MotechObject implements MotechSc
     private void scheduleJob(JobDetail jobDetail, Trigger trigger) {
         try {
             scheduler.scheduleJob(jobDetail, trigger);
+            logger.info("Job logged: " + jobDetail.getKey().getName() + " with trigger: " + trigger.getKey().getName());
         } catch (SchedulerException e) {
             handleException(String.format("Can not schedule the job:\n %s\n%s\n%s", jobDetail.toString(), trigger.toString(), e.getMessage()), e);
         }
