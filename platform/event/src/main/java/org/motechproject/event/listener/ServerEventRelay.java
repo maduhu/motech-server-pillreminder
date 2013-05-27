@@ -19,7 +19,7 @@ import java.util.Set;
  */
 @Component("eventRelay")
 public class ServerEventRelay implements EventRelay {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger("event-logger");
 
     private EventListenerRegistry eventListenerRegistry;
     private OutboundEventGateway outboundEventGateway;
@@ -40,6 +40,7 @@ public class ServerEventRelay implements EventRelay {
 
     // @TODO either relayEvent should be made private, or this method moved out to it's own class.
     public void sendEventMessage(MotechEvent event) {
+        log.info("Raising event: " + event.getSubject() + event.toString());
         Set<EventListener> listeners = eventListenerRegistry.getListeners(event.getSubject());
         Map<String, String> parameters = new HashMap<String, String>();
         parameters.put("subject", event.getSubject());
@@ -65,6 +66,7 @@ public class ServerEventRelay implements EventRelay {
      */
     public void relayEvent(MotechEvent event) {
         // Retrieve a list of listeners for the given event type
+        log.info("Dispatching event: " + event.getSubject() + event.toString());
         if (eventListenerRegistry == null) {
             String errorMessage = "eventListenerRegistry == null";
             log.error(errorMessage);

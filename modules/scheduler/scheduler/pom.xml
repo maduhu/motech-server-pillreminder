@@ -34,7 +34,10 @@
             <groupId>org.springframework</groupId>
             <artifactId>org.springframework.context.support</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>motech-c3p0-fragment-bundle</artifactId>
+        </dependency>
         <!-- Please don't delete this! This dependency is required when using 
             MySql as the job store for Quartz. -->
         <!-- Use the OSGi version -->

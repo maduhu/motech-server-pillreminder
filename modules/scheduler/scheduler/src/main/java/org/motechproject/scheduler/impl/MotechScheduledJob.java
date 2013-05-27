@@ -21,13 +21,13 @@ import java.util.Map;
  */
 public class MotechScheduledJob implements Job {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger("job-log");
 
     @Override
     @SuppressWarnings("unchecked")
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 
-        log.info("executing...");
+        log.info("Executing job..." + jobExecutionContext.getJobDetail().getKey().getName() + " with ref: " + jobExecutionContext.getJobDetail().toString());
 
         try {
             JobDetail jobDetail = jobExecutionContext.getJobDetail();
@@ -42,7 +42,7 @@ public class MotechScheduledJob implements Job {
             MotechEvent motechEvent = new MotechEvent(eventType, params);
             Trigger trigger = jobExecutionContext.getTrigger();
             motechEvent.setEndTime(trigger.getEndTime())
-                    .setLastEvent(!trigger.mayFireAgain());
+            .setLastEvent(!trigger.mayFireAgain());
 
             log.info("Sending Motech Event Message: " + motechEvent);
 
@@ -56,6 +56,8 @@ public class MotechScheduledJob implements Job {
             ApplicationContext applicationContext = (ApplicationContext) schedulerContext.get("applicationContext");
             EventRelay eventRelay = applicationContext.getBean(EventRelay.class);
             eventRelay.sendEventMessage(motechEvent);
+
+            log.info("Job finished executing");
 
         } catch (Exception e) {
             log.error("Job execution failed.", e);
