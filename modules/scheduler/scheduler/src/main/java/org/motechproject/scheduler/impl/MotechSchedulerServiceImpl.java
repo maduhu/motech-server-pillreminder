@@ -5,7 +5,6 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.motechproject.commons.api.MotechObject;
 import org.motechproject.commons.date.model.Time;
-import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.scheduler.MotechSchedulerService;
 import org.motechproject.scheduler.domain.CronJobId;
@@ -396,7 +395,7 @@ public class MotechSchedulerServiceImpl extends MotechObject implements MotechSc
 
         Date jobStartDate = schedulableJob.getStartDate();
         assertArgumentNotNull("Job start date", jobStartDate);
-        Date currentDate = DateUtil.today().toDate();
+        Date currentDate = DateTime.now().toDate();
         if (jobStartDate.before(currentDate)) {
             String errorMessage = "Invalid RunOnceSchedulableJob. The job start date can not be in the past. \n" +
                     " Job start date: " + jobStartDate.toString() +
