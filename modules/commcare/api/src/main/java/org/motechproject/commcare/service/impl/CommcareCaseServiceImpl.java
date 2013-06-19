@@ -1,10 +1,10 @@
 package org.motechproject.commcare.service.impl;
 
-import com.google.gson.reflect.TypeToken;
 import org.apache.commons.httpclient.NameValuePair;
 import org.motechproject.commcare.domain.CaseInfo;
 import org.motechproject.commcare.domain.CaseResponseJson;
 import org.motechproject.commcare.domain.CaseTask;
+import org.motechproject.commcare.domain.TopLevelCaseResponse;
 import org.motechproject.commcare.exception.CaseParserException;
 import org.motechproject.commcare.gateway.CaseTaskXmlConverter;
 import org.motechproject.commcare.response.OpenRosaResponse;
@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -72,8 +71,9 @@ public class CommcareCaseServiceImpl implements CommcareCaseService {
 
     @Override
     public List<CaseInfo> getAllCasesByType(String type) {
-        NameValuePair[] queryParams = new NameValuePair[1];
+        NameValuePair[] queryParams = new NameValuePair[2];
         queryParams[0] = new NameValuePair("type", type);
+        queryParams[1] = new NameValuePair("limit", "250");
         String response = commcareHttpClient.casesRequest(queryParams);
         List<CaseResponseJson> caseResponses = parseCasesFromResponse(response);
         return generateCasesFromCaseResponse(caseResponses);
@@ -98,20 +98,22 @@ public class CommcareCaseServiceImpl implements CommcareCaseService {
         return generateCasesFromCaseResponse(caseResponses);
     }
 
-    private List<CaseResponseJson> parseCasesFromResponse(String response) {
-        Type commcareCaseType = new TypeToken<List<CaseResponseJson>>() {
-        } .getType();
+    private List<CaseResponseJson> parseCasesFromResponse(String responseString) {
+        Type commcareCaseType = TopLevelCaseResponse.class;
 
-        List<CaseResponseJson> allCases = new ArrayList<CaseResponseJson>();
-
+        TopLevelCaseResponse response = null;
         try {
-            allCases = (List<CaseResponseJson>) motechJsonReader
-                    .readFromString(response, commcareCaseType);
+            response = (TopLevelCaseResponse) motechJsonReader
+                    .readFromString(responseString, commcareCaseType);
         } catch (Exception e) {
             logger.warn("Exception while trying to read in case JSON: " + e.getMessage());
         }
+        if (response == null) {
+            logger.warn("No response");
+            return Collections.emptyList();
+        }
 
-        return allCases;
+        return response.getObjects();
     }
 
     private CaseResponseJson parseSingleCaseFromResponse(String response) {
