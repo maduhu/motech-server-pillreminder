@@ -26,7 +26,7 @@ public class CallDetailRecord extends MotechBaseDataObject implements CallDetail
      * Call status
      */
     public enum Disposition {
-        ANSWERED, BUSY, FAILED, NO_ANSWER, UNKNOWN;
+        ANSWERED, BUSY, FAILED, NO_ANSWER, UNKNOWN, AUTHENTICATION_FAILED;
     }
 
     private DateTime startDate;

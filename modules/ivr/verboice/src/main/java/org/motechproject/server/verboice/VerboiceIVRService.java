@@ -93,26 +93,25 @@ public class VerboiceIVRService implements IVRService {
     }
 
     private String outgoingCallUri(CallRequest callRequest) {
-        String callbackUrlParameter = "";
-        String callbackStatusUrlParameter = "";
-        String callFlowId = "";
-        if (callRequest.getPayload() != null && !callRequest.getPayload().isEmpty() && callRequest.getPayload().containsKey(CALLBACK_URL)) {
-            callbackUrlParameter = "&" + CALLBACK_URL + "=" + callRequest.getPayload().get(CALLBACK_URL);
-        }
-        if (callRequest.getPayload() != null && !callRequest.getPayload().isEmpty() && callRequest.getPayload().containsKey(CALLBACK_STATUS_URL)) {
-            callbackStatusUrlParameter = "&" + CALLBACK_STATUS_URL + "=" + callRequest.getPayload().get(CALLBACK_STATUS_URL);
-        }
-        if (callRequest.getPayload() != null && !callRequest.getPayload().isEmpty() && callRequest.getPayload().containsKey(CALL_FLOW_ID)) {
-            callFlowId = "&" + CALL_FLOW_ID + "=" + callRequest.getPayload().get(CALL_FLOW_ID);
-        }
+        String callbackUrlParameter = getParameter(CALLBACK_URL, callRequest);
+        String callbackStatusUrlParameter = getParameter(CALLBACK_STATUS_URL, callRequest);
+        String callFlowId = getParameter(CALL_FLOW_ID, callRequest);
 
         return format(
                 "http://%s:%s/api/call?motech_call_id=%s&channel=%s&address=%s%s%s%s",
                 settings.getProperty("host"),
                 settings.getProperty("port"),
                 callRequest.getCallId(),
-                isBlank(callRequest.getCallBackUrl())?settings.getProperty("channel"):callRequest.getCallBackUrl(),
+                isBlank(callRequest.getCallBackUrl()) ? settings.getProperty("channel") : callRequest.getCallBackUrl(),
                         callRequest.getPhone(), callbackUrlParameter, callbackStatusUrlParameter, callFlowId
                 );
+    }
+
+    private String getParameter(String parameterName, CallRequest callRequest) {
+        String parameterValue = "";
+        if (callRequest.getPayload() != null && !callRequest.getPayload().isEmpty() && callRequest.getPayload().containsKey(parameterName)) {
+            parameterValue = "&" + parameterName + "=" + callRequest.getPayload().get(parameterName);
+        } 
+        return parameterValue;
     }
 }

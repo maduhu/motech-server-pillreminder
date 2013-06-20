@@ -34,6 +34,8 @@ public class VerboiceIVRController {
 
     private static final String VERBOICE_CALL_SID = "CallSid";
     private static final String VERBOICE_FROM_PHONE_PARAM = "From";
+    private static final long WAIT_TIME = 6000;
+
     private Logger logger = Logger.getLogger(VerboiceIVRController.class);
 
     @Autowired
@@ -94,7 +96,7 @@ public class VerboiceIVRController {
             String verboiceCallId = request.getParameter(VERBOICE_CALL_SID);
             String phoneNumber = request.getParameter(VERBOICE_FROM_PHONE_PARAM);
             String tree = request.getParameter("tree");
-            callFlowServer.getResponse(verboiceCallId, phoneNumber, "verboice",tree, CallStatus.Disconnect.toString(), language);
+            callFlowServer.getResponse(verboiceCallId, phoneNumber, "verboice", tree, CallStatus.Disconnect.toString(), language);
         }
 
         List<String> missedCallStatuses = Arrays.asList("busy", "failed", "no-answer");
@@ -112,7 +114,7 @@ public class VerboiceIVRController {
 
     private void updateRecord(String callStatus, String callSid, String phoneNumber) throws InterruptedException {
         if ("ringing".equals(callStatus)) {
-            Thread.sleep(6000);
+            Thread.sleep(WAIT_TIME);
         }
 
         FlowSessionRecord record = (FlowSessionRecord) flowSessionService.getSession(callSid);
@@ -122,11 +124,7 @@ public class VerboiceIVRController {
             CallEvent callEvent = new CallEvent(callStatus);
             callDetail.addCallEvent(callEvent);
 
-            if ("ringing".equals(callStatus)) {
-                callDetail.setDisposition(Disposition.UNKNOWN);
-            } else if ("in-progress".equals(callStatus)) {
-                callDetail.setDisposition(Disposition.ANSWERED);
-            } else if ("completed".equals(callStatus)) {
+            if ("in-progress".equals(callStatus)) {
                 callDetail.setDisposition(Disposition.ANSWERED);
             } else if ("failed".equals(callStatus)) {
                 callDetail.setDisposition(Disposition.FAILED);
