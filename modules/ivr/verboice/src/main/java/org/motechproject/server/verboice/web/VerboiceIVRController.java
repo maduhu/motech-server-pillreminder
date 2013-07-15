@@ -35,6 +35,7 @@ public class VerboiceIVRController {
     private static final String VERBOICE_CALL_SID = "CallSid";
     private static final String VERBOICE_FROM_PHONE_PARAM = "From";
     private static final long WAIT_TIME = 6000;
+    private static final int RETRIES = 3;
 
     private Logger logger = Logger.getLogger(VerboiceIVRController.class);
 
@@ -89,7 +90,9 @@ public class VerboiceIVRController {
 
         logger.info("Verboice status callback : " + callStatus);
 
-        updateRecord(callStatus, callSid, phoneNum);
+        int retries = RETRIES;
+
+        updateRecord(callStatus, callSid, phoneNum, retries);
 
         if ("completed".equals(callStatus)) {
             String language = request.getParameter("ln");
@@ -112,7 +115,9 @@ public class VerboiceIVRController {
         callFlowServer.handleMissedCall(session.getSessionId());
     }
 
-    private void updateRecord(String callStatus, String callSid, String phoneNumber) throws InterruptedException {
+    private void updateRecord(String callStatus, String callSid, String phoneNumber, int retries) throws InterruptedException {
+        CallEvent callEvent = new CallEvent(callStatus);
+
         if ("ringing".equals(callStatus)) {
             Thread.sleep(WAIT_TIME);
         }
@@ -121,7 +126,6 @@ public class VerboiceIVRController {
         if (record != null) {
 
             CallDetailRecord callDetail = record.getCallDetailRecord();
-            CallEvent callEvent = new CallEvent(callStatus);
             callDetail.addCallEvent(callEvent);
 
             if ("in-progress".equals(callStatus)) {
@@ -135,6 +139,9 @@ public class VerboiceIVRController {
             }
 
             flowSessionService.updateSession(record);
+
+        } else if (retries > 0){
+            updateRecord(callStatus, callSid, phoneNumber, retries--);
         } else {
             record = (FlowSessionRecord) flowSessionService.findOrCreate(callSid, phoneNumber);
             final CallDetailRecord callDetailRecord = record.getCallDetailRecord();
